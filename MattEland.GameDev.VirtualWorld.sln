@@ -5,6 +5,12 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.GameDev.VirtualWorld.WindowsClient", "MattEland.GameDev.VirtualWorld.WindowsClient\MattEland.GameDev.VirtualWorld.WindowsClient.csproj", "{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D0C239F-E19A-4B57-A3AB-201D514D8EBE}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Background="Black"
-        Title="Virtual World Simulator by Matt Eland" Width="800"  Height="600" Icon=".\favicon.ico">
+        Foreground="White"
+        Title="Virtual World Simulator by Matt Eland" 
+        Width="800" Height="600" 
+        Icon=".\favicon.ico">
     <Grid>
-
+        <TextBlock TextAlignment="Center" VerticalAlignment="Center">
+            Nothing here yet! Check back later.
+        </TextBlock>
     </Grid>
 </Window>

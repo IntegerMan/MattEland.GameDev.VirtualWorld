@@ -22,7 +22,7 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MattEland.GameDev.VirtualWorld.Common\MattEland.GameDev.VirtualWorld.Common.csproj" />
+    <ProjectReference Include="..\MattEland.GameDev.VirtualWorld.CrossPlatform\MattEland.GameDev.VirtualWorld.CrossPlatform.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Icon.ico">

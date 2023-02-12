@@ -10,7 +10,7 @@
         Foreground="White"
         Title="{Binding Path=Title}" 
         Width="800" Height="600" 
-        Icon=".\favicon.ico" >
+        Icon=".\icon.ico" >
     <Grid>
         <TextBlock TextAlignment="Center" VerticalAlignment="Center">
             Nothing here yet! Check back later.

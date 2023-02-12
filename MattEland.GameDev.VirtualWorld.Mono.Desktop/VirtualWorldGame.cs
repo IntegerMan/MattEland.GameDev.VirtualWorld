@@ -11,6 +11,8 @@ namespace MattEland.GameDev.VirtualWorld.Mono.Desktop
         private SpriteBatch _spriteBatch;
         private readonly VirtualWorldGameInfo _gameInfo;
 
+        private Texture2D _target;
+
         public VirtualWorldGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -23,6 +25,10 @@ namespace MattEland.GameDev.VirtualWorld.Mono.Desktop
         {
             Window.Title = _gameInfo.Title;
 
+            _graphics.PreferredBackBufferWidth = _gameInfo.WindowWidth;
+            _graphics.PreferredBackBufferHeight = _gameInfo.WindowHeight;
+            _graphics.ApplyChanges();
+            
             base.Initialize();
         }
 
@@ -30,7 +36,7 @@ namespace MattEland.GameDev.VirtualWorld.Mono.Desktop
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            _target = Content.Load<Texture2D>("8x");
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +55,10 @@ namespace MattEland.GameDev.VirtualWorld.Mono.Desktop
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            //_spriteBatch.DrawString(_font, _gameInfo.Title, new Vector2(0,0), Color.Black);
+            _spriteBatch.Draw(_target, new Vector2(0,0), Color.White);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

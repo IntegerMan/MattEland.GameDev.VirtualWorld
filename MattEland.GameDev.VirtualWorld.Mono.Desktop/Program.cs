@@ -1,9 +1,11 @@
 ﻿
+using MattEland.GameDev.VirtualWorld.Mono.Desktop;
+
 internal class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
-        using var game = new MattEland.GameDev.VirtualWorld.Mono.Desktop.VirtualWorldGame();
+        using VirtualWorldGame game = new();
         game.Run();
     }
 }

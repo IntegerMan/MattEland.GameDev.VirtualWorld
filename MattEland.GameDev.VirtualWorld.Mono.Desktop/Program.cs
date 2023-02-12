@@ -1,5 +1,5 @@
 ﻿
-using MattEland.GameDev.VirtualWorld.Mono.Desktop;
+using MattEland.GameDev.VirtualWorld.CrossPlatform;
 
 internal class Program
 {

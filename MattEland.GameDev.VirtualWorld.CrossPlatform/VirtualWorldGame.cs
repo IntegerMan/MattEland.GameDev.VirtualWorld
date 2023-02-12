@@ -1,15 +1,14 @@
-﻿using MattEland.GameDev.VirtualWorld.CrossPlatform;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace MattEland.GameDev.VirtualWorld.Mono.Desktop
+namespace MattEland.GameDev.VirtualWorld.CrossPlatform
 {
     public sealed class VirtualWorldGame : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private readonly GraphicsDeviceManager _graphics;
         private readonly VirtualWorldGameInfo _gameInfo;
+        private SpriteBatch _spriteBatch;
 
         private Texture2D _target;
 

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.GameDev.VirtualWorld.WindowsClient", "MattEland.GameDev.VirtualWorld.WindowsClient\MattEland.GameDev.VirtualWorld.WindowsClient.csproj", "{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.GameDev.VirtualWorld.WindowsClient", "MattEland.GameDev.VirtualWorld.WindowsClient\MattEland.GameDev.VirtualWorld.WindowsClient.csproj", "{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D0C239F-E19A-4B57-A3AB-201D514D8EBE}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.GameDev.VirtualWorld.Mono.Desktop", "MattEland.GameDev.VirtualWorld.Mono.Desktop\MattEland.GameDev.VirtualWorld.Mono.Desktop.csproj", "{C7CC8182-BD88-4496-B167-4695F8DC990D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55D12E9D-D7E7-43A0-A053-AC2490A44A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7CC8182-BD88-4496-B167-4695F8DC990D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7CC8182-BD88-4496-B167-4695F8DC990D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7CC8182-BD88-4496-B167-4695F8DC990D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7CC8182-BD88-4496-B167-4695F8DC990D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

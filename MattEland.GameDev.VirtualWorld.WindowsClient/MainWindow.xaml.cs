@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MattEland.GameDev.VirtualWorld.Common;
 
 namespace MattEland.GameDev.VirtualWorld.WindowsClient
 {
@@ -23,6 +24,8 @@ namespace MattEland.GameDev.VirtualWorld.WindowsClient
         public MainWindow()
         {
             InitializeComponent();
+
+            this.DataContext = new VirtualWorldGameInfo();
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿namespace MattEland.GameDev.VirtualWorld.Common
+{
+    public class VirtualWorldGameInfo
+    {
+        public Version Version => new(0, 0, 1);
+        public string VersionSuffix => " Prototype";
+        public string Title => $"Virtual World v{Version}{VersionSuffix} by Matt Eland";
+    }
+}

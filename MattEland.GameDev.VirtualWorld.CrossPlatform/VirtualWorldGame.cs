@@ -12,6 +12,7 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
         private readonly GraphicsDeviceManager _graphics;
         private readonly VirtualWorldGameInfo _gameInfo;
         private SpriteBatch _spriteBatch;
+        private SpriteFont _font;
 
         private readonly List<TileInfo> _tiles;
 
@@ -52,6 +53,7 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _target = Content.Load<Texture2D>("8x");
+            _font = Content.Load<SpriteFont>("default");
         }
 
         protected override void Update(GameTime gameTime)
@@ -71,7 +73,7 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
             GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
-            //_spriteBatch.DrawString(_font, _gameInfo.Title, new Vector2(0,0), Color.White);
+            _spriteBatch.DrawString(_font, _gameInfo.Title, new Vector2(0,0), Color.White);
 
             // Draw some game tiles
             foreach (TileInfo tile in _tiles)

@@ -1,8 +1,7 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform
+﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+
+public enum TileType
 {
-    public enum TileType
-    {
-        Wall,
-        Floor
-    }
+    Wall,
+    Floor
 }

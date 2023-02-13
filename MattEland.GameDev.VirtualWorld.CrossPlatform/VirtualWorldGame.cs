@@ -1,127 +1,120 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
 
-namespace MattEland.GameDev.VirtualWorld.CrossPlatform
+public sealed class VirtualWorldGame : Game
 {
-    public sealed class VirtualWorldGame : Game
+    private const int SourceTileSize = 8;
+    private const int ScreenTileSize = 16;
+    private readonly GraphicsDeviceManager _graphics;
+    private SpriteBatch _spriteBatch;
+    private SpriteFont _font;
+
+    private readonly List<TileInfo> _tiles = new();
+    private readonly List<Actor> _actors = new();
+
+    private Texture2D _target;
+    private readonly Rectangle _wallTileRect = new(47,85,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _floorTileRect = new(65,85,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _playerTileRect = new(68,1,SourceTileSize,SourceTileSize);
+
+    public VirtualWorldGame()
     {
-        private const int SourceTileSize = 8;
-        private const int ScreenTileSize = 16;
-        private readonly GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private SpriteFont _font;
+        _graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
+        IsMouseVisible = true;
 
-        private readonly List<TileInfo> _tiles = new();
-        private readonly List<Actor> _actors = new();
-
-        private Texture2D _target;
-        private readonly Rectangle _wallTileRect = new(47,85,SourceTileSize,SourceTileSize);
-        private readonly Rectangle _floorTileRect = new(65,85,SourceTileSize,SourceTileSize);
-        private readonly Rectangle _playerTileRect = new(68,1,SourceTileSize,SourceTileSize);
-
-        public VirtualWorldGame()
+        // Program some basic tiles
+        // TODO: Let's load these from a data file, probably involving Tiled in the process
+        for (int y = 5; y < 25; y++)
         {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-
-            // Program some basic tiles
-            // TODO: Let's load these from a data file, probably involving Tiled in the process
-            for (int y = 5; y < 25; y++)
+            for (int x = 1; x < 25; x++)
             {
-                for (int x = 1; x < 25; x++)
+                TileType tileType;
+                if (x == 1 || x == 24 || y == 5 || y == 24)
                 {
-                    TileType tileType;
-                    if (x == 1 || x == 24 || y == 5 || y == 24)
-                    {
-                        tileType = TileType.Wall;
-                    } 
-                    else
-                    {
-                        tileType = TileType.Floor;
-                    }
-
-                    _tiles.Add(new TileInfo(x, y, tileType));
+                    tileType = TileType.Wall;
+                } 
+                else
+                {
+                    tileType = TileType.Floor;
                 }
+
+                _tiles.Add(new TileInfo(x, y, tileType));
             }
-
-            _actors.Add(new Actor(15, 13));
         }
 
-        public Version Version => new(0, 0, 1);
-        public string VersionSuffix => " Prototype";
-        public string Title => $"Virtual World v{Version}{VersionSuffix} by Matt Eland";
+        _actors.Add(new Actor(15, 13));
+    }
 
-        public int WindowWidth => 800;
-        public int WindowHeight => 600;
+    public Version Version => new(0, 0, 1);
+    public string VersionSuffix => " Prototype";
+    public string Title => $"Virtual World v{Version}{VersionSuffix} by Matt Eland";
 
-        protected override void Initialize()
+    public int WindowWidth => 800;
+    public int WindowHeight => 600;
+
+    protected override void Initialize()
+    {
+        Window.Title = Title;
+
+        _graphics.PreferredBackBufferWidth = WindowWidth;
+        _graphics.PreferredBackBufferHeight = WindowHeight;
+        _graphics.ApplyChanges();
+        
+        base.Initialize();
+    }
+
+    protected override void LoadContent()
+    {
+        _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        _target = Content.Load<Texture2D>("8x");
+        _font = Content.Load<SpriteFont>("default");
+    }
+
+    protected override void Update(GameTime gameTime)
+    {
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         {
-            Window.Title = Title;
-
-            _graphics.PreferredBackBufferWidth = WindowWidth;
-            _graphics.PreferredBackBufferHeight = WindowHeight;
-            _graphics.ApplyChanges();
-            
-            base.Initialize();
+            Exit();
         }
 
-        protected override void LoadContent()
+        // TODO: Add your update logic here
+
+        base.Update(gameTime);
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        GraphicsDevice.Clear(Color.Black);
+
+        _spriteBatch.Begin();
+        _spriteBatch.DrawString(_font, Title, new Vector2(0,0), Color.White);
+
+        // Draw the game tiles
+        foreach (TileInfo tile in _tiles)
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Vector2 screenPos = tile.ToScreenPos(ScreenTileSize);
 
-            _target = Content.Load<Texture2D>("8x");
-            _font = Content.Load<SpriteFont>("default");
+            Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
+            Rectangle sourceRect = tile.TileType == TileType.Wall ? _wallTileRect : _floorTileRect;
+
+            _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
         }
 
-        protected override void Update(GameTime gameTime)
+        // Draw the actors
+        foreach (Actor actor in _actors)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
-            }
+            Vector2 screenPos = actor.ToScreenPos(ScreenTileSize);
 
-            // TODO: Add your update logic here
+            Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
+            Rectangle sourceRect = _playerTileRect;
 
-            base.Update(gameTime);
+            // TODO: This is not drawing transparent. Might be a source image problem
+            _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
         }
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.Black);
+        _spriteBatch.End();
 
-            _spriteBatch.Begin();
-            _spriteBatch.DrawString(_font, Title, new Vector2(0,0), Color.White);
-
-            // Draw the game tiles
-            foreach (TileInfo tile in _tiles)
-            {
-                Vector2 screenPos = tile.ToScreenPos(ScreenTileSize);
-
-                Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
-                Rectangle sourceRect = tile.TileType == TileType.Wall ? _wallTileRect : _floorTileRect;
-
-                _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
-            }
-
-            // Draw the actors
-            foreach (Actor actor in _actors)
-            {
-                Vector2 screenPos = actor.ToScreenPos(ScreenTileSize);
-
-                Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
-                Rectangle sourceRect = _playerTileRect;
-
-                // TODO: This is not drawing transparent. Might be a source image problem
-                _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
-            }
-
-            _spriteBatch.End();
-
-            base.Draw(gameTime);
-        }
+        base.Draw(gameTime);
     }
 }

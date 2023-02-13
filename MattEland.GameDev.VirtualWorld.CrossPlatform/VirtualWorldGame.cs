@@ -18,6 +18,7 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
 
         private Texture2D _target;
         private readonly Rectangle _wallTileRect = new(47,85,SourceTileSize,SourceTileSize);
+        private readonly Rectangle _floorTileRect = new(65,85,SourceTileSize,SourceTileSize);
 
         public VirtualWorldGame()
         {
@@ -28,13 +29,25 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
 
             // Program some basic tiles
             // TODO: Let's load these from a data file, probably involving Tiled in the process
-            _tiles = new List<TileInfo>
+            _tiles = new List<TileInfo>();
+            
+            for (int y = 5; y < 25; y++)
             {
-                new(1, 2),
-                new(2, 2),
-                new(3, 2),
-                new(1, 3)
-            };
+                for (int x = 1; x < 25; x++)
+                {
+                    TileType tileType;
+                    if (x == 1 || x == 24 || y == 5 || y == 24)
+                    {
+                        tileType = TileType.Wall;
+                    } 
+                    else
+                    {
+                        tileType = TileType.Floor;
+                    }
+
+                    _tiles.Add(new TileInfo(x, y, tileType));
+                }
+            }
         }
 
         protected override void Initialize()
@@ -79,8 +92,11 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform
             foreach (TileInfo tile in _tiles)
             {
                 Vector2 screenPos = tile.ToScreenPos(ScreenTileSize);
+
                 Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
-                _spriteBatch.Draw(_target, targetRect, _wallTileRect, Color.White);
+                Rectangle sourceRect = tile.TileType == TileType.Wall ? _wallTileRect : _floorTileRect;
+
+                _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
             }
 
             _spriteBatch.End();

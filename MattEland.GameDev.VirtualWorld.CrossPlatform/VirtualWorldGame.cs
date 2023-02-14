@@ -3,14 +3,14 @@
 public sealed class VirtualWorldGame : Game
 {
     private const int SourceTileSize = 16;
-    private const int ScreenTileSize = 16;
+    public const int ScreenTileSize = 16;
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SpriteFont _font;
     private StatsObject _stats;
 
     private readonly List<TileInfo> _tiles = new();
-    private readonly List<Actor> _actors = new();
+    private readonly List<WorldObjectBase> _objects = new();
 
     private Texture2D _target;
     private readonly Rectangle _wallTileRect = new(0,0,SourceTileSize,SourceTileSize);
@@ -42,8 +42,6 @@ public sealed class VirtualWorldGame : Game
                 _tiles.Add(new TileInfo(x, y, tileType));
             }
         }
-
-        _actors.Add(new Actor(15, 13));
     }
 
     public Version Version => new(0, 0, 1);
@@ -71,8 +69,11 @@ public sealed class VirtualWorldGame : Game
         _target = Content.Load<Texture2D>("tilemaps/tileset");
         _font = Content.Load<SpriteFont>("fonts/stats");
 
-        _stats = new StatsObject(_font);
-        _stats.Position = new Vector2(10, 10);
+        _stats = new StatsObject(_font, new Vector2(10, 10));
+        _stats.Title = Title;
+        _objects.Add(_stats);
+
+        _objects.Add(new Actor(15, 13, _target, _playerTileRect));
     }
 
     protected override void Update(GameTime gameTime)
@@ -106,15 +107,9 @@ public sealed class VirtualWorldGame : Game
         }
 
         // Draw the actors
-        foreach (Actor actor in _actors)
+        foreach (WorldObjectBase obj in _objects)
         {
-            Vector2 screenPos = actor.ToScreenPos(ScreenTileSize);
-
-            Rectangle targetRect = new((int)screenPos.X, (int)screenPos.Y, ScreenTileSize, ScreenTileSize);
-            Rectangle sourceRect = _playerTileRect;
-
-            // TODO: This is not drawing transparent. Might be a source image problem
-            _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
+            obj.Render(_spriteBatch);
         }
 
         _stats.Render(_spriteBatch);

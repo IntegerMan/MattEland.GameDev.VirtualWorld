@@ -5,6 +5,11 @@
 /// </summary>
 public abstract class WorldObjectBase
 {
+    protected WorldObjectBase() : this(0, 0)
+    {
+
+    }
+
     protected WorldObjectBase(float x, float y) : this(new Vector2(x, y))
     {
     }
@@ -14,8 +19,17 @@ public abstract class WorldObjectBase
         Position = pos;
     }
 
-    public Vector2 Position { get; }
+    public virtual void Update(GameTime time)
+    {
+
+    }
+
+    public Vector2 Position { get; set; }
 
     public Vector2 ToScreenPos(int tileSize) 
         => new(Position.X * tileSize, Position.Y * tileSize);
+
+    public virtual void Render(SpriteBatch spriteBatch)
+    {
+    }
 }

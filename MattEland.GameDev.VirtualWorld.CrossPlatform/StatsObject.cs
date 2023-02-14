@@ -10,6 +10,8 @@ public class StatsObject : TextObjectBase
 {
     public const int ROLLING_SIZE = 60;
 
+    private readonly StringBuilder _sb = new();
+
     private readonly Queue<float> _rollingFPS = new();
     public float FPS { get; set; }
     public float MinFPS { get; private set; }
@@ -18,14 +20,20 @@ public class StatsObject : TextObjectBase
     public bool IsRunningSlowly { get; set; }
     public int NbUpdateCalled { get; set; }
     public int NbDrawCalled { get; set; }
+    public string Title { get; set; }
 
     public StatsObject(SpriteFont font) : base(font)
     {
         NbUpdateCalled = 0;
         NbDrawCalled = 0;
     }
+    public StatsObject(SpriteFont font, Vector2 position) : base(font, position)
+    {
+        NbUpdateCalled = 0;
+        NbDrawCalled = 0;
+    }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         NbUpdateCalled++;
         FPS = 1.0f / (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -61,13 +69,17 @@ public class StatsObject : TextObjectBase
             MaxFPS = FPS;
         }
 
-        Text = $"FPS: {FPS:N2} (Min: {MinFPS:N2}, Max: {MaxFPS:N2}, Avg: {AverageFPS:N2})" + Environment.NewLine;
-        Text += $"Updates: {NbUpdateCalled}, Draws: {NbDrawCalled}" + Environment.NewLine;
+        _sb.Clear();
+        _sb.AppendLine(Title);
+        _sb.AppendLine($"FPS: {FPS:N2} (Min: {MinFPS:N2}, Max: {MaxFPS:N2}, Avg: {AverageFPS:N2})");
+        _sb.AppendLine($"Updates: {NbUpdateCalled}, Draws: {NbDrawCalled}");
         
         if (IsRunningSlowly)
         {
-            Text += "SLOW";
+            _sb.Append("SLOW");
         }
+
+        Text = _sb.ToString();
     }
 
     public override void Render(SpriteBatch spriteBatch)

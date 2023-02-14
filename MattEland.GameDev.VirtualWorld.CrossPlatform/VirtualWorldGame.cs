@@ -69,8 +69,10 @@ public sealed class VirtualWorldGame : Game
         _target = Content.Load<Texture2D>("tilemaps/tileset");
         _font = Content.Load<SpriteFont>("fonts/stats");
 
-        _stats = new StatsObject(_font, new Vector2(10, 10));
-        _stats.Title = Title;
+        _stats = new StatsObject(_font, new Vector2(10, 10))
+        {
+            Title = Title
+        };
         _objects.Add(_stats);
 
         _objects.Add(new Actor(15, 13, _target, _playerTileRect));
@@ -93,7 +95,6 @@ public sealed class VirtualWorldGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
-        _spriteBatch.DrawString(_font, Title, new Vector2(2,WindowHeight - _font.MeasureString(Title).Y - 2), Color.White);
 
         // Draw the game tiles
         foreach (TileInfo tile in _tiles)

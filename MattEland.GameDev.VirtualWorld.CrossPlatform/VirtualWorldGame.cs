@@ -2,19 +2,20 @@
 
 public sealed class VirtualWorldGame : Game
 {
-    private const int SourceTileSize = 8;
+    private const int SourceTileSize = 16;
     private const int ScreenTileSize = 16;
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SpriteFont _font;
+    private StatsObject _stats;
 
     private readonly List<TileInfo> _tiles = new();
     private readonly List<Actor> _actors = new();
 
     private Texture2D _target;
-    private readonly Rectangle _wallTileRect = new(47,85,SourceTileSize,SourceTileSize);
-    private readonly Rectangle _floorTileRect = new(65,85,SourceTileSize,SourceTileSize);
-    private readonly Rectangle _playerTileRect = new(68,1,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _wallTileRect = new(0,0,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _floorTileRect = new(16,0,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _playerTileRect = new(32,0,SourceTileSize,SourceTileSize);
 
     public VirtualWorldGame()
     {
@@ -29,7 +30,7 @@ public sealed class VirtualWorldGame : Game
             for (int x = 1; x < 25; x++)
             {
                 TileType tileType;
-                if (x == 1 || x == 24 || y == 5 || y == 24)
+                if (x is 1 or 24 || y is 5 or 24)
                 {
                     tileType = TileType.Wall;
                 } 
@@ -67,8 +68,11 @@ public sealed class VirtualWorldGame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        _target = Content.Load<Texture2D>("8x");
-        _font = Content.Load<SpriteFont>("default");
+        _target = Content.Load<Texture2D>("tilemaps/tileset");
+        _font = Content.Load<SpriteFont>("fonts/stats");
+
+        _stats = new StatsObject(_font);
+        _stats.Position = new Vector2(10, 10);
     }
 
     protected override void Update(GameTime gameTime)
@@ -78,7 +82,7 @@ public sealed class VirtualWorldGame : Game
             Exit();
         }
 
-        // TODO: Add your update logic here
+        _stats.Update(gameTime);
 
         base.Update(gameTime);
     }
@@ -88,7 +92,7 @@ public sealed class VirtualWorldGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
-        _spriteBatch.DrawString(_font, Title, new Vector2(0,0), Color.White);
+        _spriteBatch.DrawString(_font, Title, new Vector2(2,WindowHeight - _font.MeasureString(Title).Y - 2), Color.White);
 
         // Draw the game tiles
         foreach (TileInfo tile in _tiles)
@@ -112,6 +116,8 @@ public sealed class VirtualWorldGame : Game
             // TODO: This is not drawing transparent. Might be a source image problem
             _spriteBatch.Draw(_target, targetRect, sourceRect, Color.White);
         }
+
+        _stats.Render(_spriteBatch);
 
         _spriteBatch.End();
 

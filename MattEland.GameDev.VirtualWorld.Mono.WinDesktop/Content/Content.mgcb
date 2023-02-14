@@ -13,7 +13,21 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../Assets/8x.png
+#begin ../../Assets/Fonts/default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../Assets/Fonts/default.spritefont;Fonts/default.spritefont
+
+#begin ../../Assets/Fonts/stats.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../Assets/Fonts/stats.spritefont;Fonts/stats.spritefont
+
+#begin ../../Assets/Tilemaps/8x.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,12 +37,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../../Assets/8x.png;8x.png
+/build:../../Assets/Tilemaps/8x.png;Tilemaps/8x.png
 
-#begin ../../Assets/default.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
+#begin ../../Assets/Tilemaps/Tileset.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:../../Assets/default.spritefont;default.spritefont
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Assets/Tilemaps/Tileset.png;Tilemaps/Tileset.png
 

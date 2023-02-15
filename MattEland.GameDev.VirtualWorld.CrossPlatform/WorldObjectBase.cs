@@ -29,7 +29,5 @@ public abstract class WorldObjectBase
     public Vector2 ToScreenPos(int tileSize) 
         => new(Position.X * tileSize, Position.Y * tileSize);
 
-    public virtual void Render(SpriteBatch spriteBatch)
-    {
-    }
+    public abstract void Render(SpriteBatch spriteBatch);
 }

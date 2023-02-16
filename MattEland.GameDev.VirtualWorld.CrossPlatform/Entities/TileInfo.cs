@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Entities;
 
 
 public class TileInfo : WorldObjectBase
@@ -9,7 +10,7 @@ public class TileInfo : WorldObjectBase
     private readonly Rectangle _sourceRect;
     private Rectangle _screenRect;
 
-    public TileInfo(float x, float y, TileType tileType, Texture2D texture, Rectangle sourceRect) 
+    public TileInfo(float x, float y, TileType tileType, Texture2D texture, Rectangle sourceRect)
         : base(new Vector2(x, y))
     {
         _texture = texture;

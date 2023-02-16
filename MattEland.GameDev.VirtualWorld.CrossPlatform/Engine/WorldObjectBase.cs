@@ -1,4 +1,4 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
 
 /// <summary>
 /// The base game object
@@ -26,7 +26,7 @@ public abstract class WorldObjectBase
 
     public Vector2 Position { get; set; }
 
-    public Vector2 ToScreenPos(int tileSize) 
+    public Vector2 ToScreenPos(int tileSize)
         => new(Position.X * tileSize, Position.Y * tileSize);
 
     public abstract void Render(GameContext context);

@@ -1,4 +1,6 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+﻿using MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
+
+namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Entities.UI;
 
 /// <summary>
 /// A displayable object that includes statistics on performance
@@ -22,7 +24,7 @@ public class StatsObject : TextObjectBase
     public StatsObject(SpriteFont font, Vector2 position) : base(font, position)
     {
     }
-    
+
     public override void Update(GameContext context)
     {
         FPS = 1.0f / context.DeltaTime;

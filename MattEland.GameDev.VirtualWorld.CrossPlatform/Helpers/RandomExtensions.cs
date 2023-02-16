@@ -1,4 +1,4 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Helpers;
 
 public static class RandomExtensions
 {
@@ -6,6 +6,6 @@ public static class RandomExtensions
     {
         float range = maxValue - minValue;
 
-        return minValue + (random.NextSingle() * range);
+        return minValue + random.NextSingle() * range;
     }
 }

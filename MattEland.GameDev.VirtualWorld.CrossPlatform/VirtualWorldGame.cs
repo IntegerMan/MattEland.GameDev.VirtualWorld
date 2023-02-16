@@ -1,24 +1,27 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+﻿using MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
+using MattEland.GameDev.VirtualWorld.CrossPlatform.Entities;
+using MattEland.GameDev.VirtualWorld.CrossPlatform.Entities.UI;
+
+namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
 
 public sealed class VirtualWorldGame : Game
 {
     public const int SourceTileSize = 16;
     public const int ScreenTileSize = 16;
 
-    private readonly Rectangle _wallTileRect = new(0, 0, VirtualWorldGame.SourceTileSize, VirtualWorldGame.SourceTileSize);
-    private readonly Rectangle _floorTileRect = new(16, 0, VirtualWorldGame.SourceTileSize, VirtualWorldGame.SourceTileSize);
+    private GameContext? _context;
 
-    private readonly GameContext _context = new();
-
-    private readonly GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    private SpriteFont _font;
-    private StatsObject _stats;
+    private SpriteBatch? _spriteBatch;
+    private SpriteFont? _font;
+    private StatsObject? _stats;
+    private Texture2D? _target;
 
     private readonly List<WorldObjectBase> _objects = new();
+    private readonly GraphicsDeviceManager _graphics;
 
-    private Texture2D _target;
-    private readonly Rectangle _playerTileRect = new(32,0,SourceTileSize,SourceTileSize);
+    private readonly Rectangle _wallTileRect = new(0, 0, SourceTileSize, SourceTileSize);
+    private readonly Rectangle _floorTileRect = new(16, 0, SourceTileSize, SourceTileSize);
+    private readonly Rectangle _playerTileRect = new(32, 0, SourceTileSize, SourceTileSize);
 
     public VirtualWorldGame()
     {
@@ -48,8 +51,7 @@ public sealed class VirtualWorldGame : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        _context.Sprites = _spriteBatch;
-        _context.Graphics = GraphicsDevice;
+        _context = new GameContext(_spriteBatch, GraphicsDevice);
 
         _target = Content.Load<Texture2D>("tilemaps/tileset");
 
@@ -85,12 +87,12 @@ public sealed class VirtualWorldGame : Game
         _objects.Add(_stats);
 
         // Actor
-        _objects.Add(new Actor(15, 13, _target, _playerTileRect));
+        _objects.Add(new Actor(2, 6, _target, _playerTileRect));
     }
     
     protected override void Update(GameTime gameTime)
     {
-        _context.Update(gameTime);
+        _context!.Update(gameTime, false);
 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         {
@@ -107,11 +109,11 @@ public sealed class VirtualWorldGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        _context.Update(gameTime);
+        _context!.Update(gameTime, true);
 
         GraphicsDevice.Clear(Color.Black);
 
-        _spriteBatch.Begin();
+        _context.Sprites.Begin();
 
         // Draw the game objects
         foreach (WorldObjectBase obj in _objects)
@@ -119,7 +121,7 @@ public sealed class VirtualWorldGame : Game
             obj.Render(_context);
         }
 
-        _spriteBatch.End();
+        _context.Sprites.End();
 
         base.Draw(gameTime);
     }

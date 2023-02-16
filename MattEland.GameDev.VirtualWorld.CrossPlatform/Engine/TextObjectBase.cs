@@ -1,4 +1,4 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
+﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
 
 /// <summary>
 /// A displayable object that is drawn as text to the screen using SpriteFonts

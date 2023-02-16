@@ -19,7 +19,7 @@ public abstract class WorldObjectBase
         Position = pos;
     }
 
-    public virtual void Update(GameTime time)
+    public virtual void Update(GameContext context)
     {
 
     }
@@ -29,5 +29,5 @@ public abstract class WorldObjectBase
     public Vector2 ToScreenPos(int tileSize) 
         => new(Position.X * tileSize, Position.Y * tileSize);
 
-    public abstract void Render(SpriteBatch spriteBatch);
+    public abstract void Render(GameContext context);
 }

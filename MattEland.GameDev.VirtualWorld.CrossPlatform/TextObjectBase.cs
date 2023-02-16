@@ -14,15 +14,16 @@ public abstract class TextObjectBase : WorldObjectBase
     {
         _font = font;
     }
+
     protected TextObjectBase(SpriteFont font, Vector2 position) : base(position)
     {
         _font = font;
     }
 
-    public string Text { get; set; }
+    public string? Text { get; set; }
 
-    public override void Render(SpriteBatch spriteBatch)
+    public override void Render(GameContext context)
     {
-        spriteBatch.DrawString(_font, Text, Position, Color.White);
+        context.Sprites!.DrawString(_font, Text, Position, Color.White);
     }
 }

@@ -19,15 +19,15 @@ public class TileInfo : WorldObjectBase
 
     public TileType TileType { get; }
 
-    public override void Update(GameTime time)
+    public override void Update(GameContext context)
     {
         Vector2 screenPos = ToScreenPos(VirtualWorldGame.ScreenTileSize);
 
         _screenRect = new Rectangle((int)screenPos.X, (int)screenPos.Y, VirtualWorldGame.ScreenTileSize, VirtualWorldGame.ScreenTileSize);
     }
 
-    public override void Render(SpriteBatch spriteBatch)
+    public override void Render(GameContext context)
     {
-        spriteBatch.Draw(_texture, _screenRect, _sourceRect, Color.White);
+        context.Sprites!.Draw(_texture, _screenRect, _sourceRect, Color.White);
     }
 }

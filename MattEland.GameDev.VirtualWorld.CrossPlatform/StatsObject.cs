@@ -17,19 +17,21 @@ public class StatsObject : TextObjectBase
     public float MinFPS { get; private set; }
     public float MaxFPS { get; private set; }
     public float AverageFPS { get; private set; }
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     public StatsObject(SpriteFont font, Vector2 position) : base(font, position)
     {
     }
     
-    public override void Update(GameTime gameTime)
+    public override void Update(GameContext context)
     {
-        //NbUpdateCalled++;
-        FPS = 1.0f / (float)gameTime.ElapsedGameTime.TotalSeconds;
+        FPS = 1.0f / context.DeltaTime;
 
         // Ensure that we don't consider invalid FPS values
-        if (float.IsNaN(FPS)) return;
+        if (float.IsNaN(FPS))
+        {
+            return;
+        }
 
         _rollingFPS.Enqueue(FPS);
 
@@ -54,6 +56,11 @@ public class StatsObject : TextObjectBase
         _sb.Clear();
         _sb.AppendLine(Title);
         _sb.AppendLine($"FPS: {FPS:N2} (Min: {MinFPS:N2}, Max: {MaxFPS:N2}, Avg: {AverageFPS:N2})");
+
+        if (context.IsSlow)
+        {
+            _sb.AppendLine("RUNNING SLOWLY");
+        }
 
         Text = _sb.ToString();
     }

@@ -8,6 +8,8 @@ public sealed class VirtualWorldGame : Game
     private readonly Rectangle _wallTileRect = new(0, 0, VirtualWorldGame.SourceTileSize, VirtualWorldGame.SourceTileSize);
     private readonly Rectangle _floorTileRect = new(16, 0, VirtualWorldGame.SourceTileSize, VirtualWorldGame.SourceTileSize);
 
+    private readonly GameContext _context = new();
+
     private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private SpriteFont _font;
@@ -46,6 +48,8 @@ public sealed class VirtualWorldGame : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        _context.Sprites = _spriteBatch;
+        _context.Graphics = GraphicsDevice;
 
         _target = Content.Load<Texture2D>("tilemaps/tileset");
 
@@ -83,9 +87,11 @@ public sealed class VirtualWorldGame : Game
         // Actor
         _objects.Add(new Actor(15, 13, _target, _playerTileRect));
     }
-
+    
     protected override void Update(GameTime gameTime)
     {
+        _context.Update(gameTime);
+
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
         {
             Exit();
@@ -93,7 +99,7 @@ public sealed class VirtualWorldGame : Game
 
         foreach (WorldObjectBase obj in _objects)
         {
-            obj.Update(gameTime);
+            obj.Update(_context);
         }
 
         base.Update(gameTime);
@@ -101,6 +107,8 @@ public sealed class VirtualWorldGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
+        _context.Update(gameTime);
+
         GraphicsDevice.Clear(Color.Black);
 
         _spriteBatch.Begin();
@@ -108,7 +116,7 @@ public sealed class VirtualWorldGame : Game
         // Draw the game objects
         foreach (WorldObjectBase obj in _objects)
         {
-            obj.Render(_spriteBatch);
+            obj.Render(_context);
         }
 
         _spriteBatch.End();

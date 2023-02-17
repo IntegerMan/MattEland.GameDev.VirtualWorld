@@ -11,7 +11,7 @@ public sealed class GameContext
     /// This governs how long a key must be held in order to repeat as a keypress.
     /// This should be long enough that it doesn't trigger accidentally, but not too long to be annoying
     /// </summary>
-    public const float KeyRepeatDelayInSeconds = 0.4f;
+    public const float KeyRepeatDelayInSeconds = 0.2f;
 
     /// <summary>
     /// Tracks the keys currently pressed
@@ -19,10 +19,17 @@ public sealed class GameContext
     private Keys[] _pressedKeys = {};
 
     /// <summary>
-    /// Tracks the delay for repeating a keypress
+    /// Tracks the delay for repeating a keypress.
+    /// If a key is in this dictionary, it is considered to be on cooldown.
+    /// The value tracked is the fractional seconds remaining until the key can repeat on hold
     /// </summary>
     private readonly Dictionary<Keys, float> _keyDelays = new();
 
+    /// <summary>
+    /// Creates a new instance of GameContext
+    /// </summary>
+    /// <param name="sprites">The SpriteBatch used for rendering</param>
+    /// <param name="graphics">The GraphicsDevice to render to</param>
     public GameContext(SpriteBatch sprites, GraphicsDevice graphics)
     {
         Sprites = sprites;
@@ -49,12 +56,12 @@ public sealed class GameContext
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         IsSlow = gameTime.IsRunningSlowly;
 
+        // Only update the input layer every update call, not every draw call
         if (!isRender)
         {
             _pressedKeys = Keyboard.GetState().GetPressedKeys();
+            DecreaseKeyHoldDelays();
         }
-
-        DecreaseKeyHoldDelays();
     }
 
     private void DecreaseKeyHoldDelays()
@@ -62,7 +69,8 @@ public sealed class GameContext
         // Loop over all keys currently on cooldown and either decrease the cooldown or mark them ready
         foreach (Keys key in _keyDelays.Keys.ToList())
         {
-            if (_keyDelays[key] <= DeltaTime)
+            // If enough time has passed OR the key is no longer pressed, mark it available again
+            if (_keyDelays[key] <= DeltaTime || !_pressedKeys.Contains(key))
             {
                 // The key has been held a sufficient amount of time to repeat, remove it from the dictionary
                 _keyDelays.Remove(key);

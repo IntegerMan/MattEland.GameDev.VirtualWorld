@@ -1,9 +1,27 @@
 ﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
 
-public class GameContext
+/// <summary>
+/// The GameContext object is a context passed to various components during rendering and update.
+/// This should contain enough information about the rendering pipeline and the overall game in order
+/// for components to make informed decisions and act on the game world.
+/// </summary>
+public sealed class GameContext
 {
-    private Keys[] _lastPressedKeys = {};
+    /// <summary>
+    /// This governs how long a key must be held in order to repeat as a keypress.
+    /// This should be long enough that it doesn't trigger accidentally, but not too long to be annoying
+    /// </summary>
+    public const float KeyRepeatDelayInSeconds = 0.4f;
+
+    /// <summary>
+    /// Tracks the keys currently pressed
+    /// </summary>
     private Keys[] _pressedKeys = {};
+
+    /// <summary>
+    /// Tracks the delay for repeating a keypress
+    /// </summary>
+    private readonly Dictionary<Keys, float> _keyDelays = new();
 
     public GameContext(SpriteBatch sprites, GraphicsDevice graphics)
     {
@@ -33,8 +51,27 @@ public class GameContext
 
         if (!isRender)
         {
-            _lastPressedKeys = _pressedKeys;
             _pressedKeys = Keyboard.GetState().GetPressedKeys();
+        }
+
+        DecreaseKeyHoldDelays();
+    }
+
+    private void DecreaseKeyHoldDelays()
+    {
+        // Loop over all keys currently on cooldown and either decrease the cooldown or mark them ready
+        foreach (Keys key in _keyDelays.Keys.ToList())
+        {
+            if (_keyDelays[key] <= DeltaTime)
+            {
+                // The key has been held a sufficient amount of time to repeat, remove it from the dictionary
+                _keyDelays.Remove(key);
+            }
+            else
+            {
+                // Key still has an active cooldown, decrease the remaining time
+                _keyDelays[key] -= DeltaTime;
+            }
         }
     }
 
@@ -53,11 +90,21 @@ public class GameContext
     /// </summary>
     public GraphicsDevice Graphics { get; }
 
+    /// <summary>
+    /// Determines whether or not a key is currently pressed.
+    /// Keys are considered pressed if they were not down in the last frame and are down now, OR
+    /// they have been held down long enough that <see cref="KeyRepeatDelayInSeconds"/> has elapsed.
+    /// </summary>
+    /// <param name="key">The key to check if it is pressed</param>
+    /// <returns>True if the key is pressed, otherwise false.</returns>
     public bool IsKeyPressed(Keys key)
     {
-        // TODO: This works, but this is tiring. It'd be a lot nicer if we allowed holding keys on an interval
+        if (_pressedKeys.Contains(key) && !_keyDelays.ContainsKey(key))
+        {
+            _keyDelays[key] = KeyRepeatDelayInSeconds;
+            return true;
+        }
 
-        // This will only be true if the key is NEWLY pressed
-        return _pressedKeys.Contains(key) && !_lastPressedKeys.Contains(key);
+        return false;
     }
 }

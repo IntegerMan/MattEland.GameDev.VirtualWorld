@@ -21,40 +21,43 @@ public class Actor : WorldObjectBase
         // Actually move the player
         if (desiredMovementDelta.Length() != 0)
         {
-            // TODO: Check for collision!
-            Position = Position.Offset(desiredMovementDelta);
+            Vector2 desiredPos = Position.Offset(desiredMovementDelta);
+
+            // Check for collision
+            if (context.IsValidMove(desiredPos, this))
+            {
+                Position = desiredPos;
+            }
         }
     }
 
     private static Vector2 DetermineMovementDelta(GameContext context)
     {
+        // Pull key states
         bool rightPressed = context.IsKeyPressed(Keys.D) || context.IsKeyPressed(Keys.Right);
         bool leftPressed = context.IsKeyPressed(Keys.A) || context.IsKeyPressed(Keys.Left);
         bool upPressed = context.IsKeyPressed(Keys.W) || context.IsKeyPressed(Keys.Up);
         bool downPressed = context.IsKeyPressed(Keys.S) || context.IsKeyPressed(Keys.Down);
 
-        int deltaX = 0;
-        int deltaY = 0;
-
-        if (rightPressed)
-        {
-            deltaX++;
-        }
-        else if (leftPressed)
-        {
-            deltaX--;
-        }
-
-        if (upPressed)
-        {
-            deltaY--;
-        }
-        else if (downPressed)
-        {
-            deltaY++;
-        }
+        // X Axis
+        int deltaX = GetAxisValue(rightPressed, leftPressed);
+        int deltaY = GetAxisValue(downPressed, upPressed);
 
         return new Vector2(deltaX, deltaY);
+    }
+
+    private static int GetAxisValue(bool increasePressed, bool decreasePressed)
+    {
+        if (increasePressed)
+        {
+            return 1;
+        }
+        if (decreasePressed)
+        {
+            return -1;
+        }
+
+        return 0;
     }
 
     public override void Render(GameContext context)

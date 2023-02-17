@@ -25,6 +25,7 @@ public abstract class WorldObjectBase
     }
 
     public Vector2 Position { get; set; }
+    public virtual bool IsImpassible => false;
 
     public Vector2 ToScreenPos(int tileSize)
         => new(Position.X * tileSize, Position.Y * tileSize);

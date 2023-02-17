@@ -1,4 +1,6 @@
-﻿namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
+﻿using MattEland.GameDev.VirtualWorld.CrossPlatform.Entities;
+
+namespace MattEland.GameDev.VirtualWorld.CrossPlatform.Engine;
 
 /// <summary>
 /// The GameContext object is a context passed to various components during rendering and update.
@@ -11,7 +13,7 @@ public sealed class GameContext
     /// This governs how long a key must be held in order to repeat as a keypress.
     /// This should be long enough that it doesn't trigger accidentally, but not too long to be annoying
     /// </summary>
-    public const float KeyRepeatDelayInSeconds = 0.2f;
+    public const float KeyRepeatDelayInSeconds = 0.185f;
 
     /// <summary>
     /// Tracks the keys currently pressed
@@ -56,11 +58,25 @@ public sealed class GameContext
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         IsSlow = gameTime.IsRunningSlowly;
 
-        // Only update the input layer every update call, not every draw call
         if (!isRender)
         {
+            // Only update the input layer on update
             _pressedKeys = Keyboard.GetState().GetPressedKeys();
             DecreaseKeyHoldDelays();
+
+            // Update all objects
+            foreach (WorldObjectBase obj in _objects)
+            {
+                obj.Update(this);
+            }
+        }
+        else
+        {
+            // Draw the game objects
+            foreach (WorldObjectBase obj in _objects)
+            {
+                obj.Render(this);
+            }
         }
     }
 
@@ -114,5 +130,19 @@ public sealed class GameContext
         }
 
         return false;
+    }
+
+    private readonly List<WorldObjectBase> _objects = new();
+
+    public IEnumerable<WorldObjectBase> GameObjects => _objects.AsReadOnly(); // TODO: Can I just make this once?
+
+    public bool IsValidMove(Vector2 desiredPos, Actor actor) 
+        => !_objects.Any(o => o != actor && o.IsImpassible && o.Position == desiredPos);
+
+    public void Add(WorldObjectBase obj)
+    {
+        if (obj == null) throw new ArgumentNullException(nameof(obj));
+
+        _objects.Add(obj);
     }
 }

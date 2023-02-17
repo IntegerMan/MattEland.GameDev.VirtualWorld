@@ -20,6 +20,8 @@ public class TileInfo : WorldObjectBase
 
     public TileType TileType { get; }
 
+    public override bool IsImpassible => TileType == TileType.Wall;
+
     public override void Update(GameContext context)
     {
         Vector2 screenPos = ToScreenPos(VirtualWorldGame.ScreenTileSize);

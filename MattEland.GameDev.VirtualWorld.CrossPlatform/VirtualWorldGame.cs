@@ -16,7 +16,6 @@ public sealed class VirtualWorldGame : Game
     private StatsObject? _stats;
     private Texture2D? _target;
 
-    private readonly List<WorldObjectBase> _objects = new();
     private readonly GraphicsDeviceManager _graphics;
 
     private readonly Rectangle _wallTileRect = new(0, 0, SourceTileSize, SourceTileSize);
@@ -74,7 +73,7 @@ public sealed class VirtualWorldGame : Game
                     sourceRect = _floorTileRect;
                 }
 
-                _objects.Add(new TileInfo(x, y, tileType, _target, sourceRect));
+                _context.Add(new TileInfo(x, y, tileType, _target, sourceRect));
             }
         }
 
@@ -84,24 +83,20 @@ public sealed class VirtualWorldGame : Game
         {
             Title = Title
         };
-        _objects.Add(_stats);
+        _context.Add(_stats);
 
         // Actor
-        _objects.Add(new Actor(2, 6, _target, _playerTileRect));
+        _context.Add(new Actor(2, 6, _target, _playerTileRect));
     }
     
     protected override void Update(GameTime gameTime)
     {
         _context!.Update(gameTime, false);
 
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+            Keyboard.GetState().IsKeyDown(Keys.Escape))
         {
             Exit();
-        }
-
-        foreach (WorldObjectBase obj in _objects)
-        {
-            obj.Update(_context);
         }
 
         base.Update(gameTime);
@@ -109,18 +104,10 @@ public sealed class VirtualWorldGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        _context!.Update(gameTime, true);
-
         GraphicsDevice.Clear(Color.Black);
 
-        _context.Sprites.Begin();
-
-        // Draw the game objects
-        foreach (WorldObjectBase obj in _objects)
-        {
-            obj.Render(_context);
-        }
-
+        _context!.Sprites.Begin();
+        _context.Update(gameTime, true);
         _context.Sprites.End();
 
         base.Draw(gameTime);

@@ -7,7 +7,7 @@ namespace MattEland.GameDev.VirtualWorld.CrossPlatform;
 public sealed class VirtualWorldGame : Game
 {
     public const int SourceTileSize = 16;
-    public const int ScreenTileSize = 16;
+    public const int ScreenTileSize = 24;
 
     private GameContext? _context;
 
@@ -56,13 +56,13 @@ public sealed class VirtualWorldGame : Game
 
         // Program some basic tiles
         // TODO: Let's load these from a data file, probably involving Tiled in the process
-        for (int y = 5; y < 25; y++)
+        for (int y = 3; y < 23; y++)
         {
             for (int x = 1; x < 25; x++)
             {
                 TileType tileType;
                 Rectangle sourceRect;
-                if (x is 1 or 24 || y is 5 or 24)
+                if (x is 1 or 24 || y is 3 or 22)
                 {
                     tileType = TileType.Wall;
                     sourceRect = _wallTileRect;

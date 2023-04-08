@@ -9,8 +9,6 @@ public sealed class VirtualWorldGame : Game
     public const int SourceTileSize = 16;
     public const int ScreenTileSize = 24;
 
-    private GameContext? _context;
-
     private SpriteBatch? _spriteBatch;
     private SpriteFont? _font;
     private StatsObject? _stats;
@@ -21,6 +19,8 @@ public sealed class VirtualWorldGame : Game
     private readonly Rectangle _wallTileRect = new(0, 0, SourceTileSize, SourceTileSize);
     private readonly Rectangle _floorTileRect = new(16, 0, SourceTileSize, SourceTileSize);
     private readonly Rectangle _playerTileRect = new(32, 0, SourceTileSize, SourceTileSize);
+
+    private GameContext? _context;
 
     public VirtualWorldGame()
     {

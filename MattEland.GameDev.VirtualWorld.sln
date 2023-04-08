@@ -5,6 +5,7 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D0C239F-E19A-4B57-A3AB-201D514D8EBE}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		Assets\Sources.txt = Assets\Sources.txt
@@ -12,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.GameDev.VirtualWorld.Mono.Desktop", "MattEland.GameDev.VirtualWorld.Mono.Desktop\MattEland.GameDev.VirtualWorld.Mono.Desktop.csproj", "{C7CC8182-BD88-4496-B167-4695F8DC990D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.GameDev.VirtualWorld.Mono.WinDesktop", "MattEland.GameDev.VirtualWorld.Mono.WinDesktop\MattEland.GameDev.VirtualWorld.Mono.WinDesktop.csproj", "{3004F52D-B460-489D-BD3B-E2BB3F2773EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.GameDev.VirtualWorld.Mono.WinDesktop", "MattEland.GameDev.VirtualWorld.Mono.WinDesktop\MattEland.GameDev.VirtualWorld.Mono.WinDesktop.csproj", "{3004F52D-B460-489D-BD3B-E2BB3F2773EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MattEland.GameDev.VirtualWorld.CrossPlatform", "MattEland.GameDev.VirtualWorld.CrossPlatform\MattEland.GameDev.VirtualWorld.CrossPlatform.csproj", "{754CF7F0-1CC0-4A23-AD01-ACC10F350666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MattEland.GameDev.VirtualWorld.CrossPlatform", "MattEland.GameDev.VirtualWorld.CrossPlatform\MattEland.GameDev.VirtualWorld.CrossPlatform.csproj", "{754CF7F0-1CC0-4A23-AD01-ACC10F350666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
